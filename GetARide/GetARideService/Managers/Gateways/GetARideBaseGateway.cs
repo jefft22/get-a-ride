@@ -1,14 +1,23 @@
 ﻿namespace GetARideService.Managers.Gateways
 {
+    using System.Net.Http;
+    using System.Threading.Tasks;
     using GetARideService.Managers.Models;
 
     internal abstract class GetARideBaseGateway
     {
-        public GetARideResponse GetRides(GetARideRequest getARideRequest)
+        protected HttpClient _httpClient;
+
+        protected GetARideBaseGateway()
         {
-            return GetRidesCore(getARideRequest);
+            _httpClient = new HttpClient();
         }
 
-        abstract protected GetARideResponse GetRidesCore(GetARideRequest getARideRequest);
+        public async Task<GetARideResponse> GetRides(GetARideRequest getARideRequest)
+        {
+            return await GetRidesCore(getARideRequest);
+        }
+
+        abstract protected Task<GetARideResponse> GetRidesCore(GetARideRequest getARideRequest);
     }
 }

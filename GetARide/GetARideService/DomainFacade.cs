@@ -1,5 +1,6 @@
 ﻿namespace GetARideService
 {
+    using System.Threading.Tasks;
     using GetARideService.Managers;
     using GetARideService.Managers.Models;
     using GetARideService.Managers.ServiceLocators;
@@ -8,8 +9,8 @@
     {
         private ServiceLocatorBase _serviceLocator;
 
-        private GetARideServiceManager _getARideServiceManager;
-        private GetARideServiceManager GetARideServiceManager
+        private GetARideRidesManager _getARideServiceManager;
+        private GetARideRidesManager GetARideServiceManager
         {
             get { return _getARideServiceManager ?? (_getARideServiceManager = _serviceLocator.CreateGetARideServiceManager()); }
         }
@@ -23,9 +24,9 @@
             _serviceLocator = serviceLocator;
         }
 
-        public GetARideResponse GetRides(GetARideRequest getARideRequest)
+        public async Task<GetARideResponse> GetRides(GetARideRequest getARideRequest)
         {
-            return GetARideServiceManager.GetRides(getARideRequest);
+            return await GetARideServiceManager.GetRides(getARideRequest);
         }
     }
 }

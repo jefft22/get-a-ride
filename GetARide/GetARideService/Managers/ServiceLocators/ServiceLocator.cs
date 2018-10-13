@@ -1,12 +1,18 @@
 ﻿namespace GetARideService.Managers.ServiceLocators
 {
     using GetARideService.Managers;
+    using GetARideService.Managers.Gateways;
 
     internal sealed class ServiceLocator : ServiceLocatorBase
     {
-        protected override GetARideServiceManager GetARideServiceManagerCore()
+        protected override GetARideRidesManager CreateGetARideServiceManagerCore()
         {
-            return new GetARideServiceManager(this);
+            return new GetARideRidesManager(this);
+        }
+
+        protected override GetARideBaseGateway CreateGetARideGatewayCore()
+        {
+            return new GetARideLyftGateway();
         }
     }
 }
