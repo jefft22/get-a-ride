@@ -1,6 +1,7 @@
 ﻿namespace GetARideService.Managers
 {
     using System.Threading.Tasks;
+    using GetARideService.Managers.ConfigurationProviders;
     using GetARideService.Managers.Gateways;
     using GetARideService.Managers.Models;
     using GetARideService.Managers.ServiceLocators;
@@ -9,9 +10,26 @@
     {
         private ServiceLocatorBase _serviceLocator;
 
+        private ConfigurationProviderBase _configurationProvider;
         private GetARideBaseGateway _getARideGateway;
 
-        private GetARideBaseGateway GetARideGateway { get { return _getARideGateway ?? (_getARideGateway = _serviceLocator.CreateGetARideGateway()); } }
+        private ConfigurationProviderBase ConfigurationProvider
+        {
+            get
+            {
+                return _configurationProvider ??
+                    (_configurationProvider = _serviceLocator.CreateConfigurationProvider());
+            }
+        }
+
+        private GetARideBaseGateway GetARideLyftGateway
+        {
+            get
+            {
+                return _getARideGateway ?? 
+                    (_getARideGateway = _serviceLocator.CreateGetARideGateway(ConfigurationProvider.GetLyftGatewayConfiguration().GetAwaiter().GetResult()));
+            }
+        }
 
         public GetARideRidesManager(ServiceLocatorBase serviceLocator)
         {
@@ -20,7 +38,7 @@
 
         public async Task<GetARideResponse> GetRides(GetARideRequest getARideRequest)
         {
-            return await GetARideGateway.GetRides(getARideRequest);
+            return await GetARideLyftGateway.GetRides(getARideRequest);
         }
     }
 }

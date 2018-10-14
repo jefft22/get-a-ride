@@ -1,7 +1,9 @@
 ﻿namespace GetARideService.Managers.ServiceLocators
 {
     using GetARideService.Managers;
+    using GetARideService.Managers.ConfigurationProviders;
     using GetARideService.Managers.Gateways;
+    using GetARideService.Managers.Models;
 
     internal abstract class ServiceLocatorBase
     {
@@ -10,13 +12,20 @@
             return CreateGetARideServiceManagerCore();
         }
 
-        public GetARideBaseGateway CreateGetARideGateway()
+        public GetARideBaseGateway CreateGetARideGateway(GatewayConfiguration gatewayConfiguration)
         {
-            return CreateGetARideGatewayCore();
+            return CreateGetARideGatewayCore(gatewayConfiguration);
+        }
+
+        public ConfigurationProviderBase CreateConfigurationProvider()
+        {
+            return CreateConfigurationProviderCore();
         }
 
         protected abstract GetARideRidesManager CreateGetARideServiceManagerCore();
 
-        protected abstract GetARideBaseGateway CreateGetARideGatewayCore();
+        protected abstract GetARideBaseGateway CreateGetARideGatewayCore(GatewayConfiguration gatewayConfiguration);
+
+        protected abstract ConfigurationProviderBase CreateConfigurationProviderCore();
     }
 }

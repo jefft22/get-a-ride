@@ -7,37 +7,37 @@
     using System.Text;
     using System.Threading.Tasks;
     using Newtonsoft.Json;
+    using GetARideService.Managers.Gateways.Mappers;
     using GetARideService.Managers.Models;
     using GetARideService.Managers.Models.Lyft;
 
     internal sealed class GetARideLyftGateway : GetARideBaseGateway
     {
-        // ClientID: ropEJl80XTCs
-        // ClientToken: KcNTUHGicYLKq3UdQjKXxD6hlYF4dxFgdALmuviZxweUDl12ezOXU8hfQLuGyXUryW6r2DHQN45QWT51BpfLJ6smqdzo8ABXYdjQfGT+4tIzemD9vx3ODfc=
-        // ClientSecret: Wy8scSAHjlL3ltzM6AvLRpE15YKO6gUk
+        private readonly GatewayConfiguration _gatewayConfiguration;
 
-        private readonly string _clientId;
-        private readonly string _clientSecret;
-        private readonly string _oauthUrl;
-        private readonly string _lyftApiUrl;
-
-        public GetARideLyftGateway() : base()
+        public GetARideLyftGateway(GatewayConfiguration gatewayConfiguration) : base()
         {
-            _clientId = "ropEJl80XTCs";
-            _clientSecret = "Wy8scSAHjlL3ltzM6AvLRpE15YKO6gUk";
-            _oauthUrl = "https://api.lyft.com/oauth/token";
-            _lyftApiUrl = "https://api.lyft.com/v1";
+            _gatewayConfiguration = gatewayConfiguration;
         }
 
         protected override async Task<GetARideResponse> GetRidesCore(GetARideRequest getARideRequest)
         {
             // Validate request 
+            var getARideResponse = new GetARideResponse();
             var accessResponse = await GetAccessToken();
-            var rideTypesResponse = await GetLyftDtoFromLyftApi<LyftRideTypesResponse>(_lyftApiUrl + "/ridetypes?lat=37.7763&lng=-122.3918", accessResponse.AccessToken);
-            var rideEstimatesResponse = await GetLyftDtoFromLyftApi<LyftRideEstimatesResponse>(_lyftApiUrl + "/cost?start_lat=37.7763&start_lng=-122.3918&end_lat=37.7972&end_lng=-122.4533", accessResponse.AccessToken);
-            var etaNearbyDriversResposne = await GetLyftDtoFromLyftApi<LyftNearbyDriversEtasResponse>(_lyftApiUrl + "/nearby-drivers-pickup-etas?lat=37.7763&lng=-122.3918", accessResponse.AccessToken);
 
-            return new GetARideResponse();
+            var rideTypesResponse = await GetLyftDtoFromLyftApi<LyftRideTypesResponse>(_gatewayConfiguration.ApiUrl + "/ridetypes?lat=37.7763&lng=-122.3918", accessResponse.AccessToken);
+            var rideEstimatesResponse = await GetLyftDtoFromLyftApi<LyftRideEstimatesResponse>(_gatewayConfiguration.ApiUrl + "/cost?start_lat=37.7763&start_lng=-122.3918&end_lat=37.7972&end_lng=-122.4533", accessResponse.AccessToken);
+            var etaNearbyDriversResponse = await GetLyftDtoFromLyftApi<LyftNearbyDriversEtasResponse>(_gatewayConfiguration.ApiUrl + "/nearby-drivers-pickup-etas?lat=37.7763&lng=-122.3918", accessResponse.AccessToken);
+
+            LyftMapper.MapLyftToGetARide(getARideResponse, rideTypesResponse, rideEstimatesResponse, etaNearbyDriversResponse);
+
+            getARideResponse.AccessToken = accessResponse.AccessToken;
+            getARideResponse.AccessTokenExpirationMilliseconds = accessResponse.ExpiresIn;
+            getARideResponse.ServiceStatus = "OK";
+            getARideResponse.ServiceStatusMessage = "OK";
+
+            return getARideResponse;
         }
 
         private async Task<T> GetLyftDtoFromLyftApi<T>(string url, string accessToken)
@@ -64,11 +64,11 @@
 
         private HttpRequestMessage CreateAccessTokenHttpRequestMessage()
         {
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, _oauthUrl);
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, _gatewayConfiguration.AuthenticationUrl);
             var accessTokenRequest = new LyftAccessRequest() { GrantType = "client_credentials", Scope = "public" };
             var accessTokenRequestString = JsonConvert.SerializeObject(accessTokenRequest);
             var accessTokenRequestContent = new StringContent(accessTokenRequestString, Encoding.UTF8, "application/json");
-            var encodedClientOAuth = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{_clientId}:{_clientSecret}"));
+            var encodedClientOAuth = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{_gatewayConfiguration.ClientId}:{_gatewayConfiguration.ClientSecret}"));
 
             httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("Basic", encodedClientOAuth);
             httpRequestMessage.Content = accessTokenRequestContent;
