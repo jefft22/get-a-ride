@@ -35,7 +35,7 @@
             Console.WriteLine("Got rides. Displaying...");
             Console.WriteLine(JsonConvert.SerializeObject(rides));
 
-            Console.WriteLine("Done.");
+            Console.WriteLine("Done! Press enter to quit.");
             Console.ReadLine();
         }
     }
