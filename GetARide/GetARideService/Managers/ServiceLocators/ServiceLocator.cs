@@ -17,6 +17,11 @@
             return new GetARideLyftGateway(gatewayConfiguration);
         }
 
+        protected override GeocodeBaseGateway CreateGeocodeGatewayCore(GatewayConfiguration gatewayConfiguration)
+        {
+            return new GeocodeMapquestGateway(gatewayConfiguration);
+        }
+
         protected override ConfigurationProviderBase CreateConfigurationProviderCore()
         {
             return new ConfigurationProvider();

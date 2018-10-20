@@ -11,15 +11,24 @@
 
         protected override async Task <GatewayConfiguration> GetLyftGatewayConfigurationCore()
         {
-            var configuration = new GatewayConfiguration()
+            return new GatewayConfiguration()
             {
                 AuthenticationUrl = await GetSettingsValue("LyftGateway", "AuthenticationUrl"),
                 ApiUrl = await GetSettingsValue("LyftGateway", "ApiUrl"),
                 ClientId = await GetSettingsValue("LyftGateway", "ClientId"),
                 ClientSecret = await GetSettingsValue("LyftGateway", "ClientSecret")
             };
+        }
 
-            return configuration;
+        protected override async Task<GatewayConfiguration> GetMapquestGatewayConfigurationCore()
+        {
+            return new GatewayConfiguration()
+            {
+                AuthenticationUrl = string.Empty,
+                ApiUrl = await GetSettingsValue("MapquestGateway", "ApiUrl"),
+                ClientId = await GetSettingsValue("MapquestGateway", "ClientId"),
+                ClientSecret = await GetSettingsValue("MapquestGateway", "ClientSecret")
+            };
         }
     }
 }

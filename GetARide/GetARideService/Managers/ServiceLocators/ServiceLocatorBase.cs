@@ -17,6 +17,11 @@
             return CreateGetARideGatewayCore(gatewayConfiguration);
         }
 
+        public GeocodeBaseGateway CreateGeocodeGateway(GatewayConfiguration gatewayConfiguration)
+        {
+            return CreateGeocodeGatewayCore(gatewayConfiguration);
+        }
+
         public ConfigurationProviderBase CreateConfigurationProvider()
         {
             return CreateConfigurationProviderCore();
@@ -25,6 +30,8 @@
         protected abstract GetARideRidesManager CreateGetARideServiceManagerCore();
 
         protected abstract GetARideBaseGateway CreateGetARideGatewayCore(GatewayConfiguration gatewayConfiguration);
+
+        protected abstract GeocodeBaseGateway CreateGeocodeGatewayCore(GatewayConfiguration gatewayConfiguration);
 
         protected abstract ConfigurationProviderBase CreateConfigurationProviderCore();
     }

@@ -12,6 +12,7 @@
 
         private ConfigurationProviderBase _configurationProvider;
         private GetARideBaseGateway _getARideGateway;
+        private GeocodeBaseGateway _geocodeGateway;
 
         private ConfigurationProviderBase ConfigurationProvider
         {
@@ -31,6 +32,15 @@
             }
         }
 
+        private GeocodeBaseGateway GeocodeMapquestGateway
+        {
+            get
+            {
+                return _geocodeGateway ??
+                    (_geocodeGateway = _serviceLocator.CreateGeocodeGateway(ConfigurationProvider.GetMapquestGatewayConfiguration().GetAwaiter().GetResult()));
+            }
+        }
+
         public GetARideRidesManager(ServiceLocatorBase serviceLocator)
         {
             _serviceLocator = serviceLocator;
@@ -38,6 +48,7 @@
 
         public async Task<GetARideResponse> GetRides(GetARideRequest getARideRequest)
         {
+            await GeocodeMapquestGateway.GetGeocodeFromAddress(getARideRequest);
             return await GetARideLyftGateway.GetRides(getARideRequest);
         }
     }

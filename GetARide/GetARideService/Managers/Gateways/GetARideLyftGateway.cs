@@ -26,9 +26,9 @@
             var getARideResponse = new GetARideResponse();
             var accessResponse = await GetAccessToken();
 
-            var rideTypesResponse = await GetLyftDtoFromLyftApi<LyftRideTypesResponse>(_gatewayConfiguration.ApiUrl + "/ridetypes?lat=37.7763&lng=-122.3918", accessResponse.AccessToken);
-            var rideEstimatesResponse = await GetLyftDtoFromLyftApi<LyftRideEstimatesResponse>(_gatewayConfiguration.ApiUrl + "/cost?start_lat=37.7763&start_lng=-122.3918&end_lat=37.7972&end_lng=-122.4533", accessResponse.AccessToken);
-            var etaNearbyDriversResponse = await GetLyftDtoFromLyftApi<LyftNearbyDriversEtasResponse>(_gatewayConfiguration.ApiUrl + "/nearby-drivers-pickup-etas?lat=37.7763&lng=-122.3918", accessResponse.AccessToken);
+            var rideTypesResponse = await GetLyftDtoFromLyftApi<LyftRideTypesResponse>(_gatewayConfiguration.ApiUrl + $"/ridetypes?lat={getARideRequest.From.Latitude}&lng={getARideRequest.From.Longitude}", accessResponse.AccessToken);
+            var rideEstimatesResponse = await GetLyftDtoFromLyftApi<LyftRideEstimatesResponse>(_gatewayConfiguration.ApiUrl + $"/cost?start_lat={getARideRequest.From.Latitude}&start_lng={getARideRequest.From.Longitude}&end_lat={getARideRequest.To.Latitude}&end_lng={getARideRequest.To.Longitude}", accessResponse.AccessToken);
+            var etaNearbyDriversResponse = await GetLyftDtoFromLyftApi<LyftNearbyDriversEtasResponse>(_gatewayConfiguration.ApiUrl + $"/nearby-drivers-pickup-etas?lat={getARideRequest.From.Latitude}&lng={getARideRequest.From.Longitude}", accessResponse.AccessToken);
 
             LyftMapper.MapLyftToGetARide(getARideResponse, rideTypesResponse, rideEstimatesResponse, etaNearbyDriversResponse);
 

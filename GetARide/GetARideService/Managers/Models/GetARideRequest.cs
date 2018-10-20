@@ -12,6 +12,12 @@
         [JsonProperty("access_token_expiration_ms")]
         public long AccessTokenExpirationMilliseconds { get; set; }
 
+        [JsonProperty("from_address")]
+        public string FromAddress { get; set; }
+
+        [JsonProperty("to_address")]
+        public string ToAddress { get; set; }
+
         [JsonProperty("from")]
         public GetARideLocation From { get; set; }
 

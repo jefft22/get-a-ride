@@ -15,15 +15,17 @@
             {
                 AccessToken = string.Empty,
                 AccessTokenExpirationMilliseconds = 0,
+                FromAddress = "2234 Mission St, San Francisco, CA 94110",
+                ToAddress = "1701 Stockton St, San Francisco, CA 94133",
                 From = new GetARideLocation()
                 {
-                    Latitude = 37.7763,
-                    Longitude = -122.3918
+                    Latitude = 0, //37.7763,
+                    Longitude = 0 //-122.3918
                 },
                 To = new GetARideLocation()
                 {
-                    Latitude = 37.8763,
-                    Longitude = -122.3928
+                    Latitude = 0, //37.8763,
+                    Longitude = 0 //-122.3928
                 }
             };
 

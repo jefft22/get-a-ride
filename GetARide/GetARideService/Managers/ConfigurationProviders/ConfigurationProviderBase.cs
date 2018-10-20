@@ -19,6 +19,11 @@
             return await GetLyftGatewayConfigurationCore();
         }
 
+        public async Task<GatewayConfiguration> GetMapquestGatewayConfiguration()
+        {
+            return await GetMapquestGatewayConfigurationCore();
+        }
+
         protected async Task<string> GetSettingsValue(string section, string key)
         {
             if (!File.Exists(_configurationFilename))
@@ -46,5 +51,7 @@
         }
 
         protected abstract Task<GatewayConfiguration> GetLyftGatewayConfigurationCore();
+
+        protected abstract Task<GatewayConfiguration> GetMapquestGatewayConfigurationCore();
     }
 }
