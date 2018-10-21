@@ -7,22 +7,22 @@
 
     internal static class LyftMapper
     {
-        public static void MapLyftToGetARide(GetARideResponse getARide, LyftRideTypesResponse lyftRideTypes, LyftRideEstimatesResponse lyftRideEstimates, LyftNearbyDriversEtasResponse lyftNearbyDriversEtas)
+        public static void MapLyftToGetARide(GetARideRequest getARideRequest, GetARideResponse getARideResponse, LyftRideTypesResponse lyftRideTypes, LyftRideEstimatesResponse lyftRideEstimates, LyftNearbyDriversEtasResponse lyftNearbyDriversEtas)
         {
-            getARide.RideDetails = new List<GetARideRideDetails>();
+            getARideResponse.RideDetails = new List<GetARideRideDetails>();
 
             foreach(var rideType in lyftRideTypes.RideTypes)
             {
                 var getARideRideDetails = new GetARideRideDetails();
-                getARideRideDetails.DeepAppLink = "todo";
+                getARideRideDetails.DeepAppLink = GetDeepAppLink(getARideRequest.From, getARideRequest.To, rideType.RideType);
                 getARideRideDetails.RideType = rideType.RideType;
                 getARideRideDetails.DisplayName = rideType.DisplayName;
                 getARideRideDetails.Description = rideType.Seats + " seats";
                 getARideRideDetails.DriverLocation = new List<GetARideDriverLocation>();
-                getARide.RideDetails.Add(getARideRideDetails);
+                getARideResponse.RideDetails.Add(getARideRideDetails);
             }
 
-            foreach(var rideType in getARide.RideDetails)
+            foreach(var rideType in getARideResponse.RideDetails)
             {
                 foreach(var estimate in lyftRideEstimates.CostEstimates)
                 {
@@ -37,7 +37,7 @@
                 }
             }
 
-            foreach(var rideType in getARide.RideDetails)
+            foreach(var rideType in getARideResponse.RideDetails)
             {
                 foreach (var estimate in lyftNearbyDriversEtas.NearbyDriversPickupEtas)
                 {
@@ -57,6 +57,12 @@
                     }
                 }
             }
+        }
+
+        private static string GetDeepAppLink(GetARideLocation from, GetARideLocation to, string rideType)
+        {
+            return $"lyft://ridetype?id={rideType}&pickup[Latitude]={from.Latitude}&pickup[Longitude]={from.Longitude}&" +
+                   $"destination[Latitude]={to.Latitude}&destination[Longitude]={to.Longitude}";
         }
 
         private static int CalculateBearingAngle(IReadOnlyList<LyftLocation> locations)

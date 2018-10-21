@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetARideService", "GetARideService\GetARideService.csproj", "{BE7081D4-61F5-4189-959A-16B24FDEE8A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetARideServiceConsoleTests", "GetARideServiceConsoleTests\GetARideServiceConsoleTests.csproj", "{B230DA1C-A6C0-41D1-B6DA-12231ED0B119}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetARideServiceConsoleTests", "GetARideServiceConsoleTests\GetARideServiceConsoleTests.csproj", "{B230DA1C-A6C0-41D1-B6DA-12231ED0B119}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetARideWebApp", "GetARideWebApp\GetARideWebApp.csproj", "{2CFB8EDE-615F-4201-A552-F53D210E17F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{B230DA1C-A6C0-41D1-B6DA-12231ED0B119}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B230DA1C-A6C0-41D1-B6DA-12231ED0B119}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B230DA1C-A6C0-41D1-B6DA-12231ED0B119}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CFB8EDE-615F-4201-A552-F53D210E17F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CFB8EDE-615F-4201-A552-F53D210E17F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CFB8EDE-615F-4201-A552-F53D210E17F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CFB8EDE-615F-4201-A552-F53D210E17F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

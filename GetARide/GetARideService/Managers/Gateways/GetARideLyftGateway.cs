@@ -30,7 +30,7 @@
             var rideEstimatesResponse = await GetLyftDtoFromLyftApi<LyftRideEstimatesResponse>(_gatewayConfiguration.ApiUrl + $"/cost?start_lat={getARideRequest.From.Latitude}&start_lng={getARideRequest.From.Longitude}&end_lat={getARideRequest.To.Latitude}&end_lng={getARideRequest.To.Longitude}", accessResponse.AccessToken);
             var etaNearbyDriversResponse = await GetLyftDtoFromLyftApi<LyftNearbyDriversEtasResponse>(_gatewayConfiguration.ApiUrl + $"/nearby-drivers-pickup-etas?lat={getARideRequest.From.Latitude}&lng={getARideRequest.From.Longitude}", accessResponse.AccessToken);
 
-            LyftMapper.MapLyftToGetARide(getARideResponse, rideTypesResponse, rideEstimatesResponse, etaNearbyDriversResponse);
+            LyftMapper.MapLyftToGetARide(getARideRequest, getARideResponse, rideTypesResponse, rideEstimatesResponse, etaNearbyDriversResponse);
 
             getARideResponse.AccessToken = accessResponse.AccessToken;
             getARideResponse.AccessTokenExpirationMilliseconds = accessResponse.ExpiresIn;
