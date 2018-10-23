@@ -19,6 +19,8 @@
             }
         }
 
+        int x = 5;
+
         [HttpGet]
         public ActionResult<string> Get()
         {
